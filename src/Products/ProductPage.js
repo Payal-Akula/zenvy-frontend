@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { SideBySideMagnifier } from "react-image-magnifiers";
+// import { SideBySideMagnifier } from "react-image-magnifiers";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
 import { useCart } from "../Navbar/CartProcess/CartContext";
@@ -20,6 +20,10 @@ function ProductPage() {
     const [loading, setLoading] = useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [error, setError] = useState(null);
+    const [zoomStyle, setZoomStyle] = useState({
+    backgroundPosition: "center",
+    backgroundSize: "100%"
+});
 
     const [colors] = useState([
         { name: "Black", code: "#201D24" },
@@ -724,7 +728,7 @@ function ProductPage() {
                                 <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10 }}>
                                     <i className="bi bi-upload fs-5"></i>
                                 </div>
-                                <SideBySideMagnifier
+                                {/* <SideBySideMagnifier
                                     imageSrc={main}
                                     imageAlt="main product image"
                                     largeImageSrc={main}
@@ -743,7 +747,47 @@ function ProductPage() {
                                     className="main-image-magnifier"
                                     style={{ width: "100%", cursor: "zoom-in" }}
                                     onImageClick={() => setShowLarge(true)}
-                                />
+                                /> */}
+                                <div
+    className="main-image-magnifier"
+    style={{
+        width: "100%",
+        height: "100%",
+        backgroundImage: `url(${main})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: zoomStyle.backgroundPosition,
+        backgroundSize: zoomStyle.backgroundSize,
+        cursor: "zoom-in"
+    }}
+    onMouseMove={(e) => {
+        const { left, top, width, height } = e.target.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+
+        setZoomStyle({
+            backgroundPosition: `${x}% ${y}%`,
+            backgroundSize: "200%"
+        });
+    }}
+    onMouseLeave={() => {
+        setZoomStyle({
+            backgroundPosition: "center",
+            backgroundSize: "100%"
+        });
+    }}
+    onClick={() => setShowLarge(true)}
+>
+    <img
+        src={main}
+        alt="product"
+        style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: zoomStyle.backgroundSize === "200%" ? 0 : 1
+        }}
+    />
+</div>
                                 <div className='d-flex justify-content-center mt-2'>
                                     <button className='btn btn-sm btn-outline-secondary' onClick={() => setShowLarge(true)}>
                                         Click to see full view
