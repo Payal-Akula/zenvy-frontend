@@ -163,7 +163,7 @@ function Password() {
 
       <div className="d-flex justify-content-center align-items-center text-center mt-5 px-3">
         <a href="/" className="text-decoration-none text-black">
-          <img src={logo} alt="logp" height="70px" className="mb-4 logoimg" />
+          <img src={logo} alt="logp" height="70px" className="mb-4 logo-img" />
         </a>
         <span className="fw-semibold mb-1" style={{ marginTop: "-26px", fontSize: "13px" }}>
           .in

@@ -19,7 +19,7 @@ function Register() {
             alt="logp"
             height="70px"
             width="auto"
-            className="mb-4 logoimg"
+            className="mb-4 logo-img"
           />
         </a>
       </div>

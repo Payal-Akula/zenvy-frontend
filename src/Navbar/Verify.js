@@ -148,7 +148,7 @@ function Verify() {
       
       <div className="d-flex justify-content-center align-items-center text-center mt-5 px-3">
         <a href="/" className="text-decoration-none text-black">
-          <img src={logo} alt="logo" height="70px" className="mb-4 logoimg" />
+          <img src={logo} alt="logo" height="70px" className="mb-4 logo-img" />
         </a>
       </div>
 
