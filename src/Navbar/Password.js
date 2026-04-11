@@ -70,16 +70,23 @@ function Password() {
   localStorage.setItem("userId", user._id);
 
   console.log("✅ TOKEN SAVED:", token);
+  console.log("✅ USER SAVED:", user);
 
-  // ✅ FIXED: Change this line from "storage" to "userLoggedIn"
+  // Important: Dispatch event for same tab
   window.dispatchEvent(new Event("userLoggedIn"));
+  
+  // Also create storage event for cross-tab sync
+  const storageEvent = new StorageEvent('storage', {
+    key: 'user',
+    newValue: JSON.stringify(user)
+  });
+  window.dispatchEvent(storageEvent);
 
   setUserData(user);
 
   toast.success(`✅ Login Successful! Welcome ${user.fullName}`, {
     onClose: () => navigate("/"),
   });
-
 
       } else {
         toast.error("❌ Invalid Password!");
