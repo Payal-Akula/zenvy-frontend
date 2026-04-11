@@ -71,13 +71,12 @@ function Create() {
     }
 
     try {
-      // ✅ SEND OTP API
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email })   // 🔥 OTP goes to email
+        body: JSON.stringify({ email })
       });
 
       const data = await res.json();
@@ -89,7 +88,6 @@ function Create() {
         return;
       }
 
-      // ✅ STORE DATA ONLY AFTER OTP SUCCESS
       localStorage.setItem(
         "signupData",
         JSON.stringify({
@@ -124,17 +122,17 @@ function Create() {
         </a>
       </div>
 
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="card p-4" style={{ width: "350px" }}>
-          <h1 className="fw-semibold" style={{ fontSize: "25px", textAlign: "left" }}>
+      <div className="d-flex justify-content-center align-items-center px-3">
+        <div className="card p-4" style={{ width: "100%", maxWidth: "500px" }}>
+          <h1 className="fw-semibold" style={{ fontSize: "clamp(20px, 5vw, 25px)", textAlign: "left" }}>
             Create Account
           </h1>
 
           <form onSubmit={handleProceed}>
-            <label className="fw-bold mt-2">Enter mobile number</label>
+            <label className="fw-bold mt-2" style={{ fontSize: "clamp(12px, 3.5vw, 14px)" }}>Enter mobile number</label>
 
-            <div className="d-flex align-items-center mb-1" style={{ gap: "8px" }}>
-              <select className="border rounded p-1" style={{ width: "85px", height: "38px" }}>
+            <div className="d-flex align-items-center mb-1" style={{ gap: "8px", flexWrap: "wrap" }}>
+              <select className="border rounded p-1" style={{ width: "clamp(70px, 20%, 85px)", height: "38px" }}>
                 <option value="91">IN +91</option>
               </select>
 
@@ -145,6 +143,7 @@ function Create() {
                 value={input.mobileNumber}
                 onChange={handleChange}
                 placeholder="Mobile number"
+                style={{ flex: "1", minWidth: "150px" }}
               />
             </div>
 
@@ -154,7 +153,7 @@ function Create() {
               </div>
             )}
 
-            <label className="fw-bold mt-2">Your Name</label>
+            <label className="fw-bold mt-2" style={{ fontSize: "clamp(12px, 3.5vw, 14px)" }}>Your Name</label>
 
             <input
               type="text"
@@ -171,7 +170,7 @@ function Create() {
               </div>
             )}
 
-            <label className="fw-bold mt-2">Email</label>
+            <label className="fw-bold mt-2" style={{ fontSize: "clamp(12px, 3.5vw, 14px)" }}>Email</label>
 
             <input
               type="email"
@@ -188,7 +187,7 @@ function Create() {
               </div>
             )}
 
-            <label className="fw-bold mt-2">
+            <label className="fw-bold mt-2" style={{ fontSize: "clamp(12px, 3.5vw, 14px)" }}>
               Password (at least 6 characters)
             </label>
 
@@ -223,12 +222,12 @@ function Create() {
               </div>
             )}
 
-            <div className="text small mt-3 fw-semibold mb-3">
-              To verify your number, we’ll send a text with a temporary code.
+            <div className="text small mt-3 fw-semibold mb-3" style={{ fontSize: "clamp(11px, 3vw, 13px)" }}>
+              To verify your number, we'll send a text with a temporary code.
             </div>
 
             <div className="d-grid">
-              <button type="submit" className="bg-gradient btn btn-danger rounded-pill mb-1">
+              <button type="submit" className="bg-gradient btn btn-danger rounded-pill mb-1" style={{ fontSize: "clamp(12px, 3.5vw, 14px)", padding: "10px 0" }}>
                 Verify Mobile Number
               </button>
             </div>
@@ -236,14 +235,14 @@ function Create() {
             <hr />
 
             <div className="d-grid">
-              <span className="mb-1 fw-bold" style={{ fontSize: "14px" }}>
+              <span className="mb-1 fw-bold" style={{ fontSize: "clamp(12px, 3.5vw, 14px)" }}>
                 Already a customer?
               </span>
 
               <a
                 href="/signin"
                 className="fw-semibold text-decoration-none"
-                style={{ fontSize: "15px", color: "#0a637e" }}
+                style={{ fontSize: "clamp(13px, 4vw, 15px)", color: "#0a637e" }}
               >
                 Sign in instead
               </a>
@@ -256,20 +255,17 @@ function Create() {
 
       <footer className="w-100 text-center py-3 mt-3">
         <div className="d-flex justify-content-center gap-4 flex-wrap">
-          <a href="#" className="text-decoration-none" style={{ fontSize: "12px", color: "#0a637e" }}>
+          <a href="#" className="text-decoration-none" style={{ fontSize: "clamp(10px, 3vw, 12px)", color: "#0a637e" }}>
             Conditions of Use
           </a>
-
-          <a href="#" className="text-decoration-none" style={{ fontSize: "12px", color: "#0a637e" }}>
+          <a href="#" className="text-decoration-none" style={{ fontSize: "clamp(10px, 3vw, 12px)", color: "#0a637e" }}>
             Privacy Notice
           </a>
-
-          <a href="#" className="text-decoration-none" style={{ fontSize: "12px", color: "#0a637e" }}>
+          <a href="#" className="text-decoration-none" style={{ fontSize: "clamp(10px, 3vw, 12px)", color: "#0a637e" }}>
             Help
           </a>
         </div>
-
-        <p className="text-secondary mt-2" style={{ fontSize: "12px" }}>
+        <p className="text-secondary mt-2" style={{ fontSize: "clamp(10px, 3vw, 12px)" }}>
           © 1996–2025, Zenvy.com, Inc. or its affiliates
         </p>
       </footer>
