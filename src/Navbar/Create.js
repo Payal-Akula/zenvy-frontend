@@ -79,6 +79,8 @@ function Create() {
     setLoading(true);
 
     try {
+      console.log("Sending OTP to:", email);
+      
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/send", {
         method: "POST",
         headers: {
@@ -87,39 +89,40 @@ function Create() {
         body: JSON.stringify({ email })
       });
 
+      console.log("Response status:", res.status);
       const data = await res.json();
+      console.log("Response data:", data);
 
-      if (!res.ok) {
+      if (res.ok && data.message) {
+        // Store signup data in localStorage
+        localStorage.setItem(
+          "signupData",
+          JSON.stringify({
+            fullName,
+            email,
+            mobileNumber,
+            password
+          })
+        );
+
+        toast.success(data.message || "OTP sent successfully to your email! 📧");
+        
+        setTimeout(() => {
+          navigate("/verify");
+        }, 1000);
+      } else {
+        toast.error(data.message || "Failed to send OTP. Please try again.");
         setErrors({ ...newErrors, email: data.message || "Failed to send OTP" });
         setShake(true);
         setTimeout(() => setShake(false), 500);
-        setLoading(false);
-        return;
       }
-
-      // Store signup data in localStorage
-      localStorage.setItem(
-        "signupData",
-        JSON.stringify({
-          fullName,
-          email,
-          mobileNumber,
-          password
-        })
-      );
-
-      toast.success("OTP sent successfully to your email! 📧");
-      
-      setTimeout(() => {
-        navigate("/verify");
-      }, 1500);
 
     } catch (error) {
       console.error("OTP API error:", error);
-      setErrors({ ...newErrors, email: "Server error. Try again." });
+      toast.error("Network error. Please check your connection and try again.");
+      setErrors({ ...newErrors, email: "Network error. Please try again." });
       setShake(true);
       setTimeout(() => setShake(false), 500);
-      toast.error("Failed to send OTP. Please try again.");
     } finally {
       setLoading(false);
     }

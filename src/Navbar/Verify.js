@@ -20,6 +20,7 @@ function Verify() {
       setTimeout(() => {
         navigate("/register");
       }, 1500);
+      return;
     }
 
     const interval = setInterval(() => {
@@ -47,6 +48,8 @@ function Verify() {
     setLoading(true);
 
     try {
+      console.log("Resending OTP to:", signupData.email);
+      
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/send", {
         method: "POST",
         headers: {
@@ -56,6 +59,7 @@ function Verify() {
       });
 
       const data = await res.json();
+      console.log("Resend response:", data);
 
       if (res.ok) {
         toast.success("OTP resent successfully! 📧");
@@ -89,6 +93,8 @@ function Verify() {
     }
 
     try {
+      console.log("Verifying OTP for:", signupData.email);
+      
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/verify", {
         method: "POST",
         headers: {
@@ -104,6 +110,7 @@ function Verify() {
       });
 
       const data = await res.json();
+      console.log("Verify response:", data);
       
       if (res.ok && data.token) {
         // Store user data
@@ -111,7 +118,7 @@ function Verify() {
         localStorage.setItem("user", JSON.stringify(data.user)); 
         localStorage.setItem("userId", data.user._id || data.user.id);
         
-        console.log("✅ User registered:", data.user);
+        console.log("✅ User registered successfully:", data.user);
         
         // Clear signup data
         localStorage.removeItem("signupData");

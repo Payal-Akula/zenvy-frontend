@@ -84,9 +84,9 @@ function Singin() {
                     <img
                         src={logo}
                         alt="logp"
-                        height="70px"
+                        height="30px"
                         width="auto"
-                        className="mb-4 logoimg"
+                        className="mb-4 logo-img"
                     />
                 </NavLink>
             </div>
