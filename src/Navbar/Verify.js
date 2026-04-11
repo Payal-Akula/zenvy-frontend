@@ -94,18 +94,20 @@ function Verify() {
         localStorage.setItem("user", JSON.stringify(data.user)); 
       }
       
-      if (data.statusCode === 200) {
-        const userId = data.user._id || data.user.id;
+      if (data.statusCode === 200 || data.user) {
+        const userId = data.user?._id || data.user?.id;
         
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("userId", userId);
+        if (userId) localStorage.setItem("userId", userId);
         
         console.log("✅ User registered:", data.user);
-        console.log("✅ UserId stored:", userId);
         
         localStorage.removeItem("signupData");
         
         toast.success("Account created successfully! 🎉");
+        
+        // Dispatch login event
+        window.dispatchEvent(new Event("userLoggedIn"));
         
         setTimeout(() => {
           navigate("/");

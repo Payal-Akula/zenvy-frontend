@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/images/output-onlinepngtools.png';
 import { uname, uphone, upassword } from "../validation/valid";
+import { toast } from "react-toastify";
  
 function Create() {
   const navigate = useNavigate();
@@ -55,6 +56,9 @@ function Create() {
     if (!email) {
       newErrors.email = "Email is required!";
       valid = false;
+    } else if (!email.includes('@') || !email.includes('.')) {
+      newErrors.email = "Invalid email address!";
+      valid = false;
     }
 
     if (!upassword(password)) {
@@ -98,6 +102,7 @@ function Create() {
         })
       );
 
+      toast.success("OTP sent successfully to your email!");
       navigate("/verify");
 
     } catch (error) {
@@ -137,13 +142,14 @@ function Create() {
               </select>
 
               <input
-                type="text"
+                type="tel"
                 className="form-control rounded"
                 name="mobileNumber"
                 value={input.mobileNumber}
                 onChange={handleChange}
                 placeholder="Mobile number"
                 style={{ flex: "1", minWidth: "150px" }}
+                autoComplete="tel"
               />
             </div>
 
@@ -162,6 +168,7 @@ function Create() {
               name="fullName"
               value={input.fullName}
               onChange={handleChange}
+              autoComplete="name"
             />
 
             {errors.fullName && (
@@ -179,6 +186,7 @@ function Create() {
               name="email"
               value={input.email}
               onChange={handleChange}
+              autoComplete="email"
             />
 
             {errors.email && (
@@ -199,6 +207,7 @@ function Create() {
                 name="password"
                 value={input.password}
                 onChange={handleChange}
+                autoComplete="new-password"
               />
 
               <span
@@ -223,12 +232,12 @@ function Create() {
             )}
 
             <div className="text small mt-3 fw-semibold mb-3" style={{ fontSize: "clamp(11px, 3vw, 13px)" }}>
-              To verify your number, we'll send a text with a temporary code.
+              To verify your email, we'll send a OTP to your email address.
             </div>
 
             <div className="d-grid">
               <button type="submit" className="bg-gradient btn btn-danger rounded-pill mb-1" style={{ fontSize: "clamp(12px, 3.5vw, 14px)", padding: "10px 0" }}>
-                Verify Mobile Number
+                Verify & Send OTP
               </button>
             </div>
 
