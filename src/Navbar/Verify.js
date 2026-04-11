@@ -13,6 +13,15 @@ function Verify() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Check if signupData exists
+    const signupData = JSON.parse(localStorage.getItem("signupData"));
+    if (!signupData) {
+      toast.error("Session expired. Please sign up again.");
+      setTimeout(() => {
+        navigate("/register");
+      }, 1500);
+    }
+
     const interval = setInterval(() => {
       if (timer > 0) {
         setTimer(timer - 1);
@@ -23,7 +32,7 @@ function Verify() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timer]);
+  }, [timer, navigate]);
 
   const handleResendOTP = async () => {
     if (!canResend) return;
@@ -35,6 +44,8 @@ function Verify() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/send", {
         method: "POST",
@@ -44,16 +55,20 @@ function Verify() {
         body: JSON.stringify({ email: signupData.email }),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        toast.success("OTP resent successfully!");
+        toast.success("OTP resent successfully! 📧");
         setTimer(30);
         setCanResend(false);
       } else {
-        toast.error("Failed to resend OTP");
+        toast.error(data.message || "Failed to resend OTP");
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
       toast.error("Server error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,6 +84,7 @@ function Verify() {
     if (!signupData) {
       toast.error("Session expired. Please sign up again.");
       navigate("/register");
+      setLoading(false);
       return;
     }
 
@@ -89,19 +105,15 @@ function Verify() {
 
       const data = await res.json();
       
-      if (data.token) {
+      if (res.ok && data.token) {
+        // Store user data
         localStorage.setItem("token", data.token);  
         localStorage.setItem("user", JSON.stringify(data.user)); 
-      }
-      
-      if (data.statusCode === 200 || data.user) {
-        const userId = data.user?._id || data.user?.id;
-        
-        localStorage.setItem("user", JSON.stringify(data.user));
-        if (userId) localStorage.setItem("userId", userId);
+        localStorage.setItem("userId", data.user._id || data.user.id);
         
         console.log("✅ User registered:", data.user);
         
+        // Clear signup data
         localStorage.removeItem("signupData");
         
         toast.success("Account created successfully! 🎉");
@@ -113,7 +125,7 @@ function Verify() {
           navigate("/");
         }, 2000);
       } else {
-        toast.error(data.message || "Invalid OTP");
+        toast.error(data.message || "Invalid OTP. Please try again.");
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);

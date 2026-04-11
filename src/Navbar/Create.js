@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import logo from '../assets/images/output-onlinepngtools.png';
 import { uname, uphone, upassword } from "../validation/valid";
-import { toast } from "react-toastify";
  
 function Create() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Create() {
   });
 
   const [shake, setShake] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -74,6 +76,8 @@ function Create() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await fetch("https://zenvy-store.onrender.com/auth/otp/send", {
         method: "POST",
@@ -89,9 +93,11 @@ function Create() {
         setErrors({ ...newErrors, email: data.message || "Failed to send OTP" });
         setShake(true);
         setTimeout(() => setShake(false), 500);
+        setLoading(false);
         return;
       }
 
+      // Store signup data in localStorage
       localStorage.setItem(
         "signupData",
         JSON.stringify({
@@ -102,19 +108,27 @@ function Create() {
         })
       );
 
-      toast.success("OTP sent successfully to your email!");
-      navigate("/verify");
+      toast.success("OTP sent successfully to your email! 📧");
+      
+      setTimeout(() => {
+        navigate("/verify");
+      }, 1500);
 
     } catch (error) {
       console.error("OTP API error:", error);
       setErrors({ ...newErrors, email: "Server error. Try again." });
       setShake(true);
       setTimeout(() => setShake(false), 500);
+      toast.error("Failed to send OTP. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      <ToastContainer position="top-center" autoClose={3000} />
+      
       <div className="d-flex justify-content-center align-items-center text-center mt-2 px-3">
         <a href="/" className="text-decoration-none text-black">
           <img
@@ -232,12 +246,17 @@ function Create() {
             )}
 
             <div className="text small mt-3 fw-semibold mb-3" style={{ fontSize: "clamp(11px, 3vw, 13px)" }}>
-              To verify your email, we'll send a OTP to your email address.
+              To verify your email, we'll send an OTP to your email address.
             </div>
 
             <div className="d-grid">
-              <button type="submit" className="bg-gradient btn btn-danger rounded-pill mb-1" style={{ fontSize: "clamp(12px, 3.5vw, 14px)", padding: "10px 0" }}>
-                Verify & Send OTP
+              <button 
+                type="submit" 
+                className="bg-gradient btn btn-danger rounded-pill mb-1" 
+                style={{ fontSize: "clamp(12px, 3.5vw, 14px)", padding: "10px 0" }}
+                disabled={loading}
+              >
+                {loading ? "Sending OTP..." : "Verify & Send OTP"}
               </button>
             </div>
 
