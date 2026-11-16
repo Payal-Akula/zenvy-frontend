@@ -19,7 +19,7 @@ const Verify = lazy(() => import('./Navbar/Verify.js'));
 const Password = lazy(() => import('./Navbar/Password.js'));
 const SingleProducts = lazy(() => import('./Products/SingleProducts.js'));
 const ProductPage = lazy(() => import('./Products/ProductPage.js'));
-const WishList = lazy(() => import('./Navbar/WishList.js'));
+const WishList = lazy(() => import('./Navbar/WishList.js')); 
 const Cart = lazy(() => import('./Navbar/CartProcess/Cart.js'));
 const Address = lazy(() => import('./Navbar/Address.js'));
 const AddAddress = lazy(() => import('./Navbar/AddAddress.js'));

@@ -7,7 +7,7 @@ function Loading() {
       {/* Spinner on top */}
       <div className="spinner-wrapper mb-4">
         <div className="double-spinner"></div>
-      </div>
+      </div> 
       
       {/* Text below */}
       <div className="text-center">

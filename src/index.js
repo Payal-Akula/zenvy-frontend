@@ -13,6 +13,6 @@ root.render(
       <App />
     </CartProvider>
   </BrowserRouter>
-);
+); 
 
 reportWebVitals();

@@ -52,7 +52,6 @@ function ExchangePage() {
 
         {order.items.map((item, i) => (
           <div key={i} className="row align-items-center mb-3 border-bottom pb-2">
-
             <div className="col-md-2 text-center">
               <img
                 src={item.image}
